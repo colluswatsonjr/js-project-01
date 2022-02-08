@@ -1,27 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stylesheets/style.css">
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
     <title>BlogIt!</title>
 </head>
-<body>
-    <nav class="#4db6ac teal lighten-2">
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo">BlogIt!</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">FriendsBlogs</a></li>
-            <li><a href="#">WorldBlogs</a></li>
-            <li><a href="#">MyBlogs</a></li>
-          </ul>
-        </div>
-      </nav>
 
-    <h1>Hello World!</h1>
+<body class="">
+    <nav class="">
+        <div class="">
+            <a href="#" class="brand-logo">BlogIt!</a>
+            <ul id="navItems" class="">
+                <li><a href="#">FriendsBlogs</a></li>
+                <li><a href="#">WorldBlogs</a></li>
+                <li><a href="#">MyBlogs</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row black-text">
+        <div id="createBlog" class="col s12 m6 black-text">
+            <form action="" id="createBlogForm" method="post" class="card teal lighten-4">
+                <label for="title">Title:</label><br>
+                <input type="text" name="blog-title" id="blogTitleInput"><br>
+                <label for="author">Author:</label><br>
+                <input type="text" name="blog-author" id="blogAuthorInput"><br>
+                <label for="content">Content:</label><br>
+                <textarea type="text" name="blog-content" id="blogContentInput" rows="5" cols="50"></textarea>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div id="showBlogs" class="">
+        <select name="blog-select" id="selectBlogs">
+            <option value="myBlog">myBlogs</option>
+            <option value="myFriends">Friends</option>
+            <option value="myWorld">World</option>
+            <option value="myAll">All</option>
+        </select>
+        <div class="blogs">
+            <div class="blogCard">
+                <h3 id="blogTitle">blogTitle</h3>
+                <h5 id="blogAuthor">blogAuthor</h5>
+                <p id="blogContent">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque expedita vero at quam debitis laborum officia excepturi ea dolores odio placeat quasi velit minus nemo necessitatibus Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti iusto ratione optio! Assumenda nam molestiae maiores quibusdam inventore? Doloribus, ducimus dolorem minima ex eligendi soluta quia facere quis necessitatibus iste? praesentium, unde saepe dolorem!</p>
+                <p id="blogPosted">posted:</p>
+            </div>
+            <div class="blogBtn">
+                <button class="" type="submit" name="action" id="editBlog">Edit</button>
+                <button class="" type="submit" name="action" id="deleteBlog">Delete</button>
+            </div>
+        </div>
+    </div>
+    
 
 
 
@@ -36,4 +70,5 @@
     <!-- Connects to JS page -->
     <script src="javascripts/index.js"></script>
 </body>
+
 </html>
