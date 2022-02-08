@@ -40,6 +40,7 @@ nav{
     padding: 1%;
 }
 
-.blogCards{
+#blogCards{
     width: 30%;
+    display: block;
 }
