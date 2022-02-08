@@ -7,7 +7,9 @@ const blogCreateForm = () => document.getElementById('createBlogForm'); //grab b
 const blogTitleInput = () => document.getElementById('blogTitleInput');
 const blogAuthorInput = () => document.getElementById('blogAuthorInput');
 const blogContentInput = () => document.getElementById('blogContentInput');
-const blogCards = () => document.getElementById('blogCards')
+const blogCards = () => document.getElementById('blogCards');
+
+
 function validBlog(event){
     if(!blogTitleInput().value || !blogAuthorInput().value || !blogContentInput().value){
         console.log('error')
@@ -22,11 +24,13 @@ function createBlog(event){
     let blogContent = blogContentInput().value;
     // let time = () => {new Date().now}
     const newBlog = {
+        id: id,
         title: blogTitle,
         author: blogAuthor,
         content: blogContent,
         // created: `${Date().getMonth() + Date().getMonth()}`
     }
+    id++;
     allBlogs.push(newBlog); //store newBlog
     displayBlog(newBlog)
 }
@@ -34,15 +38,27 @@ function createBlog(event){
 function displayBlog(blog){
     let div = document.createElement('div')
     div.classList.add('blogCard')
+    div.id = blog.id;
     div.innerHTML = `
     <h2 id="blogTitle">${blog.title}</h2>
     <h3 id="blogAuthor">${blog.author}</h3>
     <p id="blogContent">${blog.content}</p>
     <br>
-    <button class="editBtn" type="submit" name="action" id="editBlog">Edit</button>
-    <button class="dltBtn" type="submit" name="action" id="deleteBlog">Delete</button>`
+    <button class="editBtn" type="submit" onclick='editBlogBtn(${blog.id})' id="${blog.id}">Edit</button>
+    <button class="dltBtn" type="submit" onclick='deleteBlogBtn(${blog.id})' id="${blog.id}">Delete</button>`
     blogCards().appendChild(div);
 }
+
+function editBlogBtn(blogId){
+    let editBlog = document.getElementById(`${blogId}`)
+    // editBlog.edit();
+}
+
+function deleteBlogBtn(blogId){
+    let dltBlog = document.getElementById(`${blogId}`)
+    dltBlog.remove();
+}
+
 
 blogCreateForm().addEventListener('submit', (event) => {
     event.preventDefault(); //stop auto refrech
