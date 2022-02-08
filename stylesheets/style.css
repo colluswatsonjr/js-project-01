@@ -1,1 +1,45 @@
 /* Page for CSS content */
+/* 
+#e0f2f1 teal lighten-5
+#b2dfdb teal lighten-4
+#80cbc4 teal lighten-3
+#4db6ac teal lighten-2
+#26a69a teal lighten-1
+#009688 teal
+#00897b teal darken-1
+#00796b teal darken-2
+#00695c teal darken-3
+#004d40 teal darken-4
+#a7ffeb teal accent-1
+#64ffda teal accent-2
+#1de9b6 teal accent-3
+#00bfa5 teal accent-4 
+*/
+
+body{
+    background-color: #b2dfdb;
+    margin: 0;
+}
+nav{
+    background-color: #4db6ac;
+    padding: 1%;
+}
+
+.navItems{
+    display: inline-block;
+}
+.navItems li{
+    display: inline;
+    
+}
+.formContainer{
+    padding: 1%;
+}
+
+.blogContainer{
+    padding: 1%;
+}
+
+.blogCards{
+    width: 30%;
+}
