@@ -2,8 +2,8 @@
 Blog app, where user can create and edit blogs
 
 ### Features
-- Blog page/ display all blogs created
-- Blog Form/ create a new blog
+- Blog page/ display all blogs created (good)
+- Blog Form/ create a new blog (good)
 - Edit button/ edits created blog and updates
 - Delete button/ deletes entire blog, after Y/N confirmation
 - Filter option/ filter to show only blogs created by specific author
