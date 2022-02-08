@@ -13,16 +13,17 @@
 
 <body class="">
     <nav class="">
-        <div class="">
+        <div id="navbar">
             <a href="#" class="brand-logo">BlogIt!</a>
-            <ul id="navItems" class="">
+            <ul class="navItems">
                 <li><a href="#">FriendsBlogs</a></li>
                 <li><a href="#">WorldBlogs</a></li>
                 <li><a href="#">MyBlogs</a></li>
             </ul>
         </div>
     </nav>
-    <div class="row black-text">
+    <br>
+    <div class="formContainer">
         <div id="createBlog" class="col s12 m6 black-text">
             <form action="" id="createBlogForm" method="post" class="card teal lighten-4">
                 <label for="title">Title:</label><br>
@@ -35,14 +36,14 @@
         </div>
     </div>
     <br>
-    <div id="showBlogs" class="">
+    <div id="showBlogs" class="blogContainer">
         <select name="blog-select" id="selectBlogs">
             <option value="myBlog">myBlogs</option>
             <option value="myFriends">Friends</option>
             <option value="myWorld">World</option>
             <option value="myAll">All</option>
         </select>
-        <div class="blogs">
+        <div class="blogCards">
             <div class="blogCard">
                 <h3 id="blogTitle">blogTitle</h3>
                 <h5 id="blogAuthor">blogAuthor</h5>
