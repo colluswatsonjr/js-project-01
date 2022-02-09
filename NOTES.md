@@ -6,14 +6,14 @@ Blog app, where user can create and edit blogs
 - Blog Form/ create a new blog (good)
 - Edit button/ edits created blog and updates
 - Delete button/ deletes entire blog, after Y/N confirmation
-- Filter option/ filter to show only blogs created by specific author
+- Select option/ select to deleted blogs or current blogs
 
 ### MVP
 - Blogs (DOMContentLoaded)
 - Create blog (submit event)
 - Edit button (click event)
 - Delete button (click event)
-- Filter option (change event)
+- Select option (change event)
 
 ### Stretch Goals
 * mocked login
