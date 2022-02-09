@@ -1,0 +1,36 @@
+{
+  "allBlogs": [
+    {
+      "id": 1,
+      "title": "blogTitle",
+      "author": "blogAuthor",
+      "content": "blogContent"
+    },
+    {
+      "id": 2,
+      "title": "blogTitle2",
+      "author": "blogAuthor2",
+      "content": "blogContent2"
+    },
+    {
+      "id": 3,
+      "title": "testTitle",
+      "author": "testAuthor",
+      "content": "testContent"
+    }
+  ],
+  "removedBlogs": [
+    {
+      "id": 99,
+      "title": "blogTitle3",
+      "author": "blogAuthor3",
+      "content": "blogContent3"
+    },
+    {
+      "id": 100,
+      "title": "blogTitle4",
+      "author": "blogAuthor4",
+      "content": "blogContent4"
+    }
+  ]
+}
