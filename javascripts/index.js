@@ -170,7 +170,7 @@ selectBlog().addEventListener('change', (event) => {
 function deleteBlog(id){
     let dltBlog = document.getElementById(`${id}`)
     if(confirm('Are you sure?')){
-        
+
     }
     console.log()
     // removeBlog(dltBlog)
