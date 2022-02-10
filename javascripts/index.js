@@ -28,13 +28,37 @@ function renderBlogCards(object) {//creates div to be be added to page in html f
     card.innerHTML = ` 
             <h2 id="blogTitle">${object.title}</h2>
             <h3 id="blogAuthor">${object.author}</h3>
-            <p id="blogContent">${object.content}</p>
+            <p id="blogContent"><span class='card-content'>${object.content}</span></p>
             <br>
-            <button class="removeBtn" type="submit" onclick='removeThis(${object.id})' id="${object.id}">Remove</button>
-            <button class="deleteBtn" type="submit"  onclick='deleteThis(${object.id})' id="${object.id}">Delete</button>
+            <button id="editBtn" type="submit">Edit</button>
+            <button id="removeBtn" type="submit">Remove</button>
+            <button id="deleteBtn" type="submit">Delete</button>
             `; //creates content of div and adds data from object
+    
+    card.querySelector('#editBtn').addEventListener('click', (event) => {
+        event.preventDefault();
+        card.querySelector('span').textContent = ''
+        updateBlogCard(object)
+    })
+    card.querySelector('#removeBtn').addEventListener('click', () => console.log('click remove'))
+    card.querySelector('#deleteBtn').addEventListener('click', () => console.log('click delete'))
+
     blogCards().appendChild(card)
 }
+// function handleEdit(){
+//     console.log('click edit')
+// }
+// function handleEdit(){
+//     console.log('click edit')
+// }
+// function handleEdit(){
+//     console.log('click edit')
+// }
+// function editBlogBtn(){
+//     blogContentInput().value = document.getElementById('blogContent').innerHTML
+//     updateBlogCard(blog)
+// }
+
 
 
 //Fetch Requests
@@ -61,6 +85,20 @@ function addBlogCard(object) {
     blogAuthorInput().value = '';
     blogContentInput().value = '';
 }
+function updateBlogCard(object){
+    console.log(object)
+    fetch(`http://localhost:3000/currentBlogs/${object.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type':'applicatin/json'
+        },
+        body: JSON.stringify(object)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+}
+
+
 
 //Initilize
 function init() {
