@@ -1,3 +1,396 @@
+const createBlogForm = () => document.getElementById('createBlogForm'); //grab blog form
+const blogTitleInput = () => document.getElementById('blogTitleInput');
+const blogAuthorInput = () => document.getElementById('blogAuthorInput');
+const blogContentInput = () => document.getElementById('blogContentInput');
+const blogSelector = () => document.getElementById('selectBlogs');
+const blogCards = () => document.getElementById('blogCards');
+let id = 0;
+
+//Event Listeners
+createBlogForm().addEventListener('submit', submitBlog)
+blogSelector().addEventListener('change', (event) => {
+    event.preventDefault();
+    getAllBlogs()
+})
+//Event Handlers
+function submitBlog(event) {
+    event.preventDefault();
+    let blogData = '';
+    if (!blogTitleInput().value || !blogAuthorInput().value || !blogContentInput().value) {
+        createBlogForm().style.backgroundColor = 'yellow';
+        setTimeout(() => {
+            createBlogForm().style.backgroundColor = '';
+        }, 600);
+    } else {
+        blogData = {
+            title: blogTitleInput().value,
+            author: blogAuthorInput().value,
+            content: blogContentInput().value,
+        }
+        addBlogCard(blogData)
+        renderBlogCards(blogData)
+    }
+}
+
+//DOM Render Functions
+function renderBlogCards(object, option) {//creates div to be be added to page in html form
+    if (option == 'dltDlt') {
+        a = '';
+        b = 'none';
+    } else if (option == 'addDlt') {
+        a = 'none';
+        b = '';
+    }
+    let card = document.createElement('div'); //create div
+    card.classList.add('blogCard'); //add class blogCard to div
+    card.id = object.id; //add id to card
+    card.innerHTML = ` 
+            <h2 id="blogTitle">${object.title}</h2>
+            <h3 id="blogAuthor">${object.author}</h3>
+            <p id="blogContent">${object.content}</p>
+            <br>
+            <button id="editBtn" type="submit">Edit</button>
+            <button id="saveBtn" style='display: none' type="submit">Save</button>
+            <button id="cancelBtn" style='display: none' type="submit">Cancel</button>
+            <button id="removeBtn" style='display: ${a}'>Remove</button>
+            <button id="deleteBtn" style='display: ${b}'>Delete</button>
+            `; //creates content of div and adds data from object
+
+    card.querySelector('#editBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        card.querySelector('#blogTitle').contentEditable = true;
+        card.querySelector('#blogTitle').style.backgroundColor = 'white'
+
+        card.querySelector('#blogAuthor').contentEditable = true;
+        card.querySelector('#blogAuthor').style.backgroundColor = 'white'
+
+        card.querySelector('#blogContent').contentEditable = true;
+        card.querySelector('#blogContent').style.backgroundColor = 'white'
+
+        card.querySelector('#editBtn').style.display = 'none'
+        card.querySelector('#removeBtn').style.display = 'none'
+        card.querySelector('#saveBtn').style.display = ''
+        card.querySelector('#cancelBtn').style.display = ''
+
+        card.querySelector('#saveBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            object.id = NaN
+            addBlogCard(object, blogSelector().value)
+
+            setTimeout(() => {
+
+                console.log('settimeout')
+                // deleteBlogCard(object, blogSelector().value)
+
+                // getAllBlogs()
+            }, 600);
+            // addBlogCard(object, blogSelector().value)
+
+
+        })
+        // updateBlogCard(card)
+    })
+    card.querySelector('#removeBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(e)
+        deleteBlogCard(object, 'currentBlogs')
+
+        object.id = NaN
+        addBlogCard(object, 'removedBlogs')
+    })
+    card.querySelector('#deleteBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        deleteBlogCard(object)
+    })
+
+    blogCards().appendChild(card)
+}
+
+//Fetch Requests
+function getAllBlogs(selectBlog = blogSelector().value) { //fetch request to renders all blogs in current blog
+    // let selectBlog = blogSelector().value
+    blogCards().innerHTML = '';
+    fetch(`http://localhost:3000/${selectBlog}`)
+        .then(res => res.json())
+        .then(blogData => {
+            let arr = blogData;
+            for (var i = arr.length - 1; i >= 0; i--) {
+                if (selectBlog == 'currentBlogs') {
+                    renderBlogCards(arr[i], 'dltDlt')
+                } else if (selectBlog == 'removedBlogs') {
+                    renderBlogCards(arr[i], 'addDlt')
+                } else {
+                    console.log('selecrBlogs not found')
+                }
+            }
+            // blogData.forEach(blog => renderBlogCards(blog))
+        })
+        .catch(err => console.log(err))
+}
+
+function renderBlogs(array){
+    
+}
+function addBlogCard(object, selectBlog = 'currentBlogs') { //fetch to post/add object to data blog
+    fetch(`http://localhost:3000/${selectBlog}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(object)
+    })
+        .then(res => res.json())
+        .then(data => console.log('Successfully created object:', data))
+        .catch(err => console.log(err))
+
+
+    // resets input fields
+    blogTitleInput().value = '';
+    blogAuthorInput().value = '';
+    blogContentInput().value = '';
+}
+function deleteBlogCard(object, selectBlog = 'removedBlogs') { //fetch to delete/remove object from data blog
+    fetch(` http://localhost:3000/${selectBlog}/${object.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => console.log('Successfully deleted object: ', data))
+        .catch(err => console.log(err))
+}
+function updateBlogCard(object) { //fetch to patch/edit object data
+    let newData = divToData(object) //turns div into data obj
+    console.log(newData)
+    // fetch(`http://localhost:3000/currentBlogs/${object.id}`, {
+    //     method: 'PATCH',
+    //     headers: {
+    //         'Content-Type':'application/json'
+    //     },
+    //     body: JSON.stringify(newData)
+    // })
+    // .then(res => res.json())
+    // .then(data => console.log('Success: ',data))
+    // .catch(err => console.log(err))
+}
+
+function divToData(div) {
+    let obj = {
+        id: div.id,
+        title: blogTitle.innerHTML,
+        author: blogAuthor.innerHTML,
+        content: blogContent.innerHTML
+    }
+    return obj
+}
+
+//Intiilize
+// document.addEventListener('DOMContentLoaded', (event) => {
+//     console.log('DOM fully loaded and parsed');
+//     getAllBlogs()
+// })
+getAllBlogs()
+
+
+
+
+
+// const createNewBlog = () => {
+//     createBlogForm().addEventListener('submit', (event) => {
+//         event.preventDefault();
+//         let cardData = createCardData(); //creates card
+//         let newCard = createCard(cardData);
+//         saveThisCard(cardData, 'currentBlogs'); //saves card
+//         showThisCard(newCard, 'currentBlogs'); //save new card to currentBlogs
+//     })
+//     // if (!blogTitleInput().value || !blogAuthorInput().value || !blogContentInput().value) {
+//     //     console.log('error')
+//     // }else{
+//     //     return true
+//     // }
+// }
+
+// const createNewBlog = () => {
+//     createBlogForm().addEventListener('submit', (event) => {
+//         event.preventDefault();
+//         let cardData = createCardData(); //creates card
+//         let newCard = createCard(cardData);
+//         saveThisCard(cardData, 'currentBlogs'); //saves card
+//         showThisCard(newCard, 'currentBlogs'); //save new card to currentBlogs
+//     })
+//     // if (!blogTitleInput().value || !blogAuthorInput().value || !blogContentInput().value) {
+//     //     console.log('error')
+//     // }else{
+//     //     return true
+//     // }
+// }
+
+// //add events without waiting for styles/images to finish loading
+// document.addEventListener('DOMContentLoaded', () => {
+//     checkSelected(); // displays current selector value, handles selector change
+//     createNewBlog(); // create new blogs, handles form input to display
+// });
+// //checks value of selector and uses function to switch betwen arrays
+// const checkSelected = () => {
+//     displayTheseBlogs(selectBlog().value); //logs currently selects blogs
+//     selectBlog().addEventListener('change', (event) => {
+//         event.preventDefault();
+//         blogCards().innerHTML = ''; //clear all blog for div
+//         displayTheseBlogs(`${event.target.value}`) //will be a selector option value 'currentBlogs' or 'removedBlogs'
+//     })
+// };
+// // ===============================================================================================================
+// // makes a request to database to search for (x)Blogs
+// const displayTheseBlogs = (x) => { //makes fetch request to database and call displayBlog on them
+//     fetch(`http://localhost:3000/${x}`) //makes request with passed value
+//         .then(res => res.json()) //makes a request for data and turn it into json to be used
+//         .then(blogsArray => {
+//             displayBlog(blogsArray) //calls function on returned array of objects
+//         })
+//         .catch(err => console.log(err))
+// };
+// function displayBlog(array) { //displays all blogs of array passed after creating card
+//     blogCards().innerHTML = ''; //clear all blog for div
+//     for (const blog of array) {
+//         let newCard = createCard(blog);
+//         showThisCard(newCard);
+//     }
+// };
+
+// function showThisCard(card) { //displays card on current page
+//     blogCards().appendChild(card)
+// };
+// // ===============================================================================================================
+// const createNewBlog = () => {
+//     createBlogForm().addEventListener('submit', (event) => {
+//         event.preventDefault();
+//         let cardData = createCardData(); //creates card
+//         let newCard = createCard(cardData);
+//         saveThisCard(cardData, 'currentBlogs'); //saves card
+//         showThisCard(newCard, 'currentBlogs'); //save new card to currentBlogs
+//     })
+//     // if (!blogTitleInput().value || !blogAuthorInput().value || !blogContentInput().value) {
+//     //     console.log('error')
+//     // }else{
+//     //     return true
+//     // }
+// }
+
+// function createCardData() { //takes current values form input fileds and turns them into a object, reset input fields
+//     let title = blogTitleInput().value;
+//     let author = blogAuthorInput().value;
+//     let content = blogContentInput().value;
+//     const newBlog = {
+//         id: id,
+//         title: title,
+//         author: author,
+//         content: content,
+//     }
+//     id++;
+//     // resets input fields
+//     blogTitleInput().value = '';
+//     blogAuthorInput().value = '';
+//     blogContentInput().value = '';
+//     return newBlog
+// }
+// function saveThisCard(object, selectBlog) { //adds card to database of currentBlogs
+//     fetch(`http://localhost:3000/${selectBlog}`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Accept: 'application'
+//         },
+//         body: JSON.stringify(object)
+//     })
+//         .then(res => res.json())
+//         .then(array => console.log('Success:', array)) //displays all blogs
+//         .catch(err => console.log('Error:', err))
+// }
+// // ===============================================================================================================
+// function removeThis(id) {
+//     addToRemoved(id, 'currentBlogs')
+//     removeFromCurrent(id, 'currentBlogs')
+// }
+
+// function addToRemoved(id, selectBlog) {
+//     console.log(id, selectBlog)
+//     fetch(`http://localhost:3000/${selectBlog}/${id}`)
+//         .then(res => res.json())
+//         .then(data => { saveThisCard(data, 'removedBlogs') })
+//         .catch(err => console.log(err));
+// }
+
+// function removeFromCurrent(id, selectBlog) {
+//     fetch(`http://localhost:3000/${selectBlog}/${id}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(res => res.json())
+//         .then(data => console.log('Success:', data))
+//         .catch(err => console.log(err))
+
+
+// }
+
+
+
+
+
+
+// function aremoveThis(id) {
+//     fetch(`http://localhost:3000/currentBlogs/${id}`)
+//         .then(res => res.json()) //makes a request for data and turn it into json to be used
+//         .then(data => {
+//             saveThisCard(data, 'removedBlogs')
+//             displayTheseBlogs('currentBlogs')
+//         })
+//         .catch(err => console.log(err));
+//     deleteThis(id, 'currentBlogs')
+// }
+
+// function adeleteThis(id, selectBlog = 'removedBlogs',) {
+//     console.log(selectBlog)
+//     fetch(`http://localhost:3000/${selectBlog}/${id}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     })
+//         .then(res => res.json())
+//         .then(data => console.log('Success:', data))
+//         .catch(err => console.log(err))
+
+//     displayTheseBlogs(selectBlog)
+// 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Page for JS content
 const allBlogs = [];
 const deletedBlogs = [];
