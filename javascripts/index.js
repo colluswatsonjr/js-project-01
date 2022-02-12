@@ -21,7 +21,7 @@ function fetchCardData(selectContainer = currentCards){ //gets data from server 
     })
     .catch(err => console.log('Err, failed to fetchCardData', err))
 }
-function addData(object, selectContainer){
+function addData(object, selectContainer){ //post request to add object to selected container 
     fetch(`http://localhost:3000/${selectContainer}`,{
         method:'POST',
         headers:{
@@ -33,7 +33,7 @@ function addData(object, selectContainer){
     .then(data => console.log('Success add:', data))
     .catch(err => console.log('Fail add:', err))
 }
-function updateData(object, selectContainer){
+function updateData(object, selectContainer){ //Patch request to updata data
     console.log(object, selectContainer)
     fetch(`http://localhost:3000/${selectContainer}/${object.id}`,{
         method:'PATCH',
@@ -46,7 +46,7 @@ function updateData(object, selectContainer){
     .then(data => console.log('Success update:', data))
     .catch(err => console.log('Failure: ', err))
 }
-function deleteData(object, selectContainer = currentCards){
+function deleteData(object, selectContainer = currentCards){ //delete data by selecting container and object
     fetch(`http://localhost:3000/${selectContainer}/${object.id}`,{
         method: 'DELETE',
         headers:{
@@ -101,7 +101,10 @@ function createCard(object, container){ //create card and fills in object data, 
     })
     card.querySelector('#deleteBtn').addEventListener('click', (e)=>{ //deletes from current container after confirming
         e.preventDefault();
-        deleteCardData(object);
+        
+        if (confirm("Are you sure??")) {
+            deleteData(object);
+          }
     })    
 
     cardContainer().appendChild(card)
@@ -127,15 +130,13 @@ function editCardData(card, object){
         object.author = newAuthor.innerHTML
         object.content = newContent.innerHTML
         updateData(object, currentCards);
-        fetchCardData(currentCards)
+        fetchCardData(cardSelector().value)
     })
     card.querySelector('#cancelBtn').addEventListener('click', (e)=>{
         e.preventDefault();
-        fetchCardData(currentCards)
+        fetchCardData(cardSelector().value)
     })
 }
-
-
 
 //EVENT LISTENERS
 createCardForm().addEventListener('submit', (e)=>{ //create new card, adds card to current card data
@@ -147,6 +148,11 @@ createCardForm().addEventListener('submit', (e)=>{ //create new card, adds card 
         content: contentInput().value
     }
     addData(newCard, 'currentCards');
+
+    // resets input fields
+    titleInput().value = '';
+    authorInput().value = '';
+    contentInput().value = '';
 })
 cardSelector().addEventListener('change', (e)=>{
     e.preventDefault();
@@ -157,7 +163,7 @@ cardSelector().addEventListener('change', (e)=>{
 })
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    fetchCardData(); //fetch request with current value of selector
+    fetchCardData(cardSelector().value); //fetch request with current value of selector
     console.log('DOM fully loaded and parsed');
 });
 
