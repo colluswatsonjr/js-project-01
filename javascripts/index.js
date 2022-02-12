@@ -2,12 +2,15 @@ const createBlogForm = () => document.getElementById('createBlogForm'); //grab b
 const blogTitleInput = () => document.getElementById('blogTitleInput');
 const blogAuthorInput = () => document.getElementById('blogAuthorInput');
 const blogContentInput = () => document.getElementById('blogContentInput');
-const selectBlog = () => document.getElementById('selectBlogs');
+const blogSelector = () => document.getElementById('selectBlogs');
 const blogCards = () => document.getElementById('blogCards');
-
+let id = 0
 //Event Listeners
 createBlogForm().addEventListener('submit', submitBlog)
-
+blogSelector().addEventListener('change', (event) => {
+    event.preventDefault();
+    getAllBlogs()
+})
 //Event Handlers
 function submitBlog(event) {
     event.preventDefault()
@@ -16,95 +19,130 @@ function submitBlog(event) {
         author: blogAuthorInput().value,
         content: blogContentInput().value,
     }
-    renderBlogCards(blogData)
     addBlogCard(blogData)
+    renderBlogCards(blogData)
 }
 
 //DOM Render Functions
-function renderBlogCards(object) {//creates div to be be added to page in html form
+function renderBlogCards(object, option) {//creates div to be be added to page in html form
+    let a = '';
+    let b ='';
+    if(option == 'dltDlt'){
+        a = '';
+        b = 'none';
+    }else if(option == 'addDlt'){
+        a = 'none';
+        b = '';
+    }
     let card = document.createElement('div'); //create div
     card.classList.add('blogCard'); //add class blogCard to div
     card.id = object.id; //add id to card
     card.innerHTML = ` 
             <h2 id="blogTitle">${object.title}</h2>
             <h3 id="blogAuthor">${object.author}</h3>
-            <p id="blogContent"><span class='card-content'>${object.content}</span></p>
+            <p id="blogContent">${object.content}</p>
             <br>
             <button id="editBtn" type="submit">Edit</button>
-            <button id="removeBtn" type="submit">Remove</button>
-            <button id="deleteBtn" type="submit">Delete</button>
+            <button id="removeBtn" style='display: ${a}' type="submit">Remove</button>
+            <button id="deleteBtn" style='display: ${b}' type="submit">Delete</button>
             `; //creates content of div and adds data from object
     
-    card.querySelector('#editBtn').addEventListener('click', (event) => {
-        event.preventDefault();
-        card.querySelector('span').textContent = ''
-        updateBlogCard(object)
+    card.querySelector('#editBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        card.querySelector('#blogContent').textContent = blogContentInput().value;
+        updateBlogCard(card)
     })
-    card.querySelector('#removeBtn').addEventListener('click', () => console.log('click remove'))
-    card.querySelector('#deleteBtn').addEventListener('click', () => console.log('click delete'))
+
+    card.querySelector('#removeBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        addBlogCard(object, 'removedBlogs')
+        deleteBlogCard(object, 'currentBlogs')
+    })
+    card.querySelector('#deleteBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        deleteBlogCard(object)
+    })
 
     blogCards().appendChild(card)
 }
-// function handleEdit(){
-//     console.log('click edit')
-// }
-// function handleEdit(){
-//     console.log('click edit')
-// }
-// function handleEdit(){
-//     console.log('click edit')
-// }
-// function editBlogBtn(){
-//     blogContentInput().value = document.getElementById('blogContent').innerHTML
-//     updateBlogCard(blog)
-// }
 
-
+function updateBlogCard(object) {
+    console.log(object.id)
+    console.log(object)
+    // fetch(`http://localhost:3000/currentBlogs/${object.id}`, {
+    //     method: 'PATCH',
+    //     headers: {
+    //         'Content-Type':'application/json'
+    //     },
+    //     body: JSON.stringify(object)
+    // })
+    // .then(res => res.json())
+    // .then(data => console.log('Success: ',data))
+    // .catch(err => console.log(err))
+}
 
 //Fetch Requests
-function getAllBlogs() {
-    fetch(`http://localhost:3000/currentBlogs`)
+function getAllBlogs(selectBlog = blogSelector().value) { //renders all blogs in current blog
+    // let selectBlog = blogSelector().value
+    blogCards().innerHTML = ''
+    fetch(`http://localhost:3000/${selectBlog}`)
         .then(res => res.json())
-        .then(blogData => blogData.forEach(blog => renderBlogCards(blog)))
+        .then(blogData => {
+            let arr = blogData;
+            for (var i = arr.length - 1; i >= 0; i--) {
+                if(selectBlog == 'currentBlogs'){
+                    renderBlogCards(arr[i], 'dltDlt')
+                }else if(selectBlog == 'removedBlogs'){
+                    renderBlogCards(arr[i], 'addDlt')
+                }else{
+                    console.log('selecrBlogs not found')
+                }
+            }
+            // blogData.forEach(blog => renderBlogCards(blog))
+        })
         .catch(err => console.log(err))
 }
-function addBlogCard(object) {
-    fetch(`http://localhost:3000/currentBlogs`, {
+function addBlogCard(object, selectBlog = 'currentBlogs') {
+    console.log(object)
+    fetch(`http://localhost:3000/${selectBlog}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(object)
     })
-    .then(res => res.json())
-    .then(data => console.log('Success:', data))
-    .catch(err => console.log(err))
+        .then(res => res.json())
+        .then(data => console.log('Success:', data))
+        .catch(err => console.log(err))
+
 
     // resets input fields
     blogTitleInput().value = '';
     blogAuthorInput().value = '';
     blogContentInput().value = '';
 }
-function updateBlogCard(object){
-    console.log(object)
-    fetch(`http://localhost:3000/currentBlogs/${object.id}`, {
-        method: 'PATCH',
+function deleteBlogCard(object, selectBlog = 'removedBlogs') {
+    fetch(` http://localhost:3000/${selectBlog}/${object.id}`, {
+        method: 'DELETE',
         headers: {
-            'Content-Type':'applicatin/json'
-        },
-        body: JSON.stringify(object)
+            'Content-Type': 'application/json'
+        }
     })
-    .then(res => res.json())
-    .then(data => console.log(data))
+        .then(res => res.json())
+        .then(data => console.log('Success: ', data))
+        .catch(err => console.log(err))
 }
 
-
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    getAllBlogs('currentBlogs')
+})
 
 //Initilize
-function init() {
-    getAllBlogs()
-}
-init()
+// function init() { //kickstarts page
+//     getAllBlogs()
+// }
+// init()
 
 
 
