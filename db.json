@@ -1,27 +1,114 @@
 {
-  "currentBlogs": [
+  "currentCards": [
     {
-      
-        "id": 1,
-        "title": "Sebastian",
-        "author": "Eschweiler",
-        "content": "sebastian@codingthesmartway.com"
-      },
-      {
-        "id": 2,
-        "title": "Steve",
-        "author": "Palmer",
-        "content": "steve@codingthesmartway.com"
-      },
-      {
-        "id": 3,
-        "title": "Ann",
-        "author": "Smith",
-        "content": "ann@codingthesmartway.com"
-      }
-
+      "title": "collus",
+      "author": "jr",
+      "content": "this is notasdf newasdf asdasdf",
+      "id": 11
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "ASDF",
+      "id": 13
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "ASDF",
+      "id": 14
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "asdf",
+      "id": 15
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "asdf",
+      "id": 16
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "AS",
+      "id": 17
+    },
+    {
+      "title": "asdf",
+      "author": "vasdv",
+      "content": "asdvasdvasvas",
+      "id": 18
+    }
   ],
-  "removedBlogs": [
-    
+  "removedCards": [
+    {
+      "title": "",
+      "author": "",
+      "content": "",
+      "id": 25
+    },
+    {
+      "title": "collus",
+      "author": "asd",
+      "content": "asd",
+      "id": 26
+    },
+    {
+      "title": "collus",
+      "author": "asd",
+      "content": "asd",
+      "id": 27
+    },
+    {
+      "id": 28,
+      "title": "Sebastian",
+      "author": "Eschweilerasdfasdf234r2",
+      "content": "HEfsadfasdfasdfbsdfbY@GasdfasdfasdfasdfOOGLE.CdfbOM"
+    },
+    {
+      "id": 29,
+      "title": "Sebastian",
+      "author": "Eschweilerasdfasdf234r2",
+      "content": "HEfsadfasdfasdfbsdfbY@GasdfasdfasdfasdfOOGLE.CdfbOM"
+    },
+    {
+      "id": 30,
+      "title": "Sebastian",
+      "author": "Eschweilerasdfasdf234r2",
+      "content": "HEfsadfasdfasdfbsdfbY@GasdfasdfasdfasdfOOGLE.CdfbOM"
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "THIS IS A TEST UPDATE pt5",
+      "id": 31
+    },
+    {
+      "title": "collusf",
+      "author": "fasd",
+      "content": "emnasdf ",
+      "id": 32
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "asdfasdfasdfasdfafasdfasdfasdfsdasdfsadfasdfasdfasdf",
+      "id": 33
+    },
+    {
+      "title": "collus",
+      "author": "asdf",
+      "content": "sdafasdfasdf",
+      "id": 34
+    },
+    {
+      "title": "collus",
+      "author": "jr",
+      "content": "asd",
+      "id": 35
+    }
   ]
 }
